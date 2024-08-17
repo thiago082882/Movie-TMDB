@@ -1,0 +1,15 @@
+package br.thiago.moviemdb.domain.usecase.user
+
+import br.thiago.moviemdb.domain.model.user.User
+import br.thiago.moviemdb.domain.repository.user.UserRepository
+import javax.inject.Inject
+
+class UserUpdateUseCase  constructor(
+    private val userRepository: UserRepository
+) {
+
+    suspend operator fun invoke(user: User) {
+        userRepository.update(user)
+    }
+
+}
