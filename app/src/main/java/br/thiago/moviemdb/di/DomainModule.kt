@@ -1,7 +1,9 @@
 package br.thiago.moviemdb.di
 
 import br.thiago.moviemdb.data.repository.auth.FirebaseAuthenticationImpl
+import br.thiago.moviemdb.data.repository.movie.MovieRepositoryImpl
 import br.thiago.moviemdb.domain.repository.auth.FirebaseAuthentication
+import br.thiago.moviemdb.domain.repository.movie.MovieRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,10 +18,10 @@ abstract class DomainModule {
         firebaseAuthenticationImpl: FirebaseAuthenticationImpl
     ): FirebaseAuthentication
 
-//    @Binds
-//    abstract fun bindsMovieRepositoryImpl(
-//        movieRepositoryImpl: MovieRepositoryImpl
-//    ): MovieRepository
+    @Binds
+    abstract fun bindsMovieRepositoryImpl(
+        movieRepositoryImpl: MovieRepositoryImpl
+    ): MovieRepository
 //
 //    @Binds
 //    abstract fun bindsMovieDetailsRepositoryImpl(

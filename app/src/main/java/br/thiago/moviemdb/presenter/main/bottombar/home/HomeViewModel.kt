@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.thiago.moviemdb.presenter.model.MoviesByGenre
+import br.thiago.moviemdb.util.StateView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,8 +20,8 @@ class HomeViewModel @Inject constructor(
     val movieList: LiveData<List<MoviesByGenre>>
         get() = _movieList
 
-  //  private val _homeState = MutableLiveData<StateView<Unit>>()
-  //  val homeState: LiveData<StateView<Unit>> get() = _homeState
+    private val _homeState = MutableLiveData<StateView<Unit>>()
+  val homeState: LiveData<StateView<Unit>> get() = _homeState
 
     init {
         getGenres()
@@ -29,7 +30,7 @@ class HomeViewModel @Inject constructor(
     fun getGenres() {
         viewModelScope.launch {
             try {
-               // _homeState.postValue(StateView.Loading())
+              _homeState.postValue(StateView.Loading())
 
                // val genres = getGenresUseCase()
                // getMoviesByGenre(genres)
