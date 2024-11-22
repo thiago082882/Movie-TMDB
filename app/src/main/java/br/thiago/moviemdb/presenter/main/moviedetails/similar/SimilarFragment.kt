@@ -38,7 +38,7 @@ class SimilarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecycler()
+      //  initRecycler()
 
         initObservers()
     }
@@ -51,27 +51,27 @@ class SimilarFragment : Fragment() {
         }
     }
 
-    private fun initRecycler() {
-        movieAdapter = MovieAdapter(
-            context = requireContext(),
-            layoutInflater = R.layout.movie_genre_item,
-            movieClickListener = { movieId ->
-//                movieId?.let {
-//                    val action = MainGraphDirections
-//                        .actionGlobalMovieDetailsFragment(movieId)
-//                    findNavController().onNavigate(action)
-//                }
-            }
-        )
+//    private fun initRecycler() {
+//        movieAdapter = MovieAdapter(
+//            context = requireContext(),
+//            layoutInflater = R.layout.movie_genre_item,
+//            movieClickListener = { movieId ->
+////                movieId?.let {
+////                    val action = MainGraphDirections
+////                        .actionGlobalMovieDetailsFragment(movieId)
+////                    findNavController().onNavigate(action)
+////                }
+//            }
+//        )
 
         val lm = GridLayoutManager(requireContext(), 2)
-
-        with(binding.recyclerMovies) {
-            layoutManager = lm
-            setHasFixedSize(true)
-            adapter = movieAdapter
-        }
-    }
+//
+//        with(binding.recyclerMovies) {
+//            layoutManager = lm
+//            setHasFixedSize(true)
+//            adapter = movieAdapter
+//        }
+//    }
 
     private fun getSimilar(movieId: Int) {
        // similarViewModel.getSimilar(movieId).observe(viewLifecycleOwner) {

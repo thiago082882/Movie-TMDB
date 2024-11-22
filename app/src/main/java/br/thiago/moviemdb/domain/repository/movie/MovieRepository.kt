@@ -7,9 +7,13 @@ import br.thiago.moviemdb.data.model.movie.MovieResponse
 
 interface MovieRepository {
 
-    suspend fun getGenres(apiKey: String,language: String?): GenresResponse
+    suspend fun getGenres(): GenresResponse
 
-    suspend  fun getMoviesByGenre(apiKey: String,language: String?,genreId: Int?): List<MovieResponse>
+    fun getMoviesByGenrePagination(genreId: Int?): PagingSource<Int, MovieResponse>
+
+    suspend fun getMoviesByGenre(genreId: Int?): BasePaginationRemote<List<MovieResponse>>
+
+    fun searchMovies(query: String?): PagingSource<Int, MovieResponse>
 
 
 

@@ -14,11 +14,11 @@ class DataModule {
     @Provides
     fun providerServiceProvider() = ServiceProvider()
 
-    @Provides
-    fun providerServiceApi(
-     serviceProvider: ServiceProvider
-    ):ServiceApi{
-        return serviceProvider.createService(ServiceApi::class.java)
-    }
+//    @Provides
+//    fun providerServiceApi(
+//     serviceProvider: ServiceProvider
+//    ):ServiceApi{
+//        return serviceProvider.createService(ServiceApi::class.java)
+//    }
 
 }

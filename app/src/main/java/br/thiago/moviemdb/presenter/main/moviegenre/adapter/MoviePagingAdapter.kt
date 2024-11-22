@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import br.thiago.moviemdb.databinding.MovieGenreItemBinding
 import br.thiago.moviemdb.domain.model.movie.Movie
+import br.thiago.moviemdb.util.circularProgressDrawable
 import com.bumptech.glide.Glide
 
 class MoviePagingAdapter(
@@ -45,20 +46,18 @@ class MoviePagingAdapter(
         )
     }
 
-//    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//        val movie = getItem(position)
-//
-//        Glide
-//            .with(context)
-//            .load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
-//            .placeholder(context.circularProgressDrawable())
-//            .into(holder.binding.movieImage)
-//
-//        holder.itemView.setOnClickListener { movieClickListener(movie?.id) }
-//    }
-override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-    TODO("Not yet implemented")
-}
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val movie = getItem(position)
+
+        Glide
+            .with(context)
+            .load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
+            .placeholder(context.circularProgressDrawable())
+            .into(holder.binding.movieImage)
+
+        holder.itemView.setOnClickListener { movieClickListener(movie?.id) }
+    }
+
     inner class MyViewHolder(val binding: MovieGenreItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 

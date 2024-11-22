@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import br.thiago.moviemdb.MainGraphDirections
 import br.thiago.moviemdb.databinding.FragmentHomeBinding
 import br.thiago.moviemdb.presenter.main.bottombar.home.adapter.GenreMovieAdapter
-
+import br.thiago.moviemdb.util.StateView
+import br.thiago.moviemdb.util.onNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,58 +37,58 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-      //  initRecycler()
+        initRecycler()
 
-     //   initObservers()
+        initObservers()
     }
 
-//    private fun initObservers() {
-//        viewModel.homeState.observe(viewLifecycleOwner) { stateView ->
-//            when (stateView) {
-//                is StateView.Error -> {
-//                    binding.progressBar.isVisible = false
-//                    binding.recyclerGenres.isVisible = false
-//                }
-//
-//                is StateView.Loading -> {
-//                    binding.progressBar.isVisible = true
-//                    binding.recyclerGenres.isVisible = false
-//                }
-//
-//                is StateView.Success -> {
-//                    binding.progressBar.isVisible = false
-//                    binding.recyclerGenres.isVisible = true
-//                }
-//
-//            }
-//        }
-//
-//        viewModel.movieList.observe(viewLifecycleOwner) { moviesByGenre ->
-//            genreMovieAdapter.submitList(moviesByGenre)
-//        }
-//    }
+    private fun initObservers() {
+        viewModel.homeState.observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Error -> {
+                    binding.progressBar.isVisible = false
+                    binding.recyclerGenres.isVisible = false
+                }
 
-//    private fun initRecycler() {
-//        genreMovieAdapter = GenreMovieAdapter(
-//            showAllListener = { genreId, name ->
-//                val action = HomeFragmentDirections
-//                    .actionMenuHomeToMovieGenreFragment(genreId, name)
-//                findNavController().onNavigate(action)
-//            },
-//            movieClickListener = { movieId ->
-//                movieId?.let {
-//                    val action = MainGraphDirections
-//                        .actionGlobalMovieDetailsFragment(movieId)
-//                    findNavController().onNavigate(action)
-//                }
-//            }
-//        )
-//
-//        with(binding.recyclerGenres) {
-//            setHasFixedSize(true)
-//            adapter = genreMovieAdapter
-//        }
-//    }
+                is StateView.Loading -> {
+                    binding.progressBar.isVisible = true
+                    binding.recyclerGenres.isVisible = false
+                }
+
+                is StateView.Success -> {
+                    binding.progressBar.isVisible = false
+                    binding.recyclerGenres.isVisible = true
+                }
+
+            }
+        }
+
+        viewModel.movieList.observe(viewLifecycleOwner) { moviesByGenre ->
+            genreMovieAdapter.submitList(moviesByGenre)
+        }
+    }
+
+    private fun initRecycler() {
+        genreMovieAdapter = GenreMovieAdapter(
+            showAllListener = { genreId, name ->
+                val action = HomeFragmentDirections
+                    .actionMenuHomeToMovieGenreFragment(genreId, name)
+                findNavController().onNavigate(action)
+            },
+            movieClickListener = { movieId ->
+                movieId?.let {
+                    val action = MainGraphDirections
+                        .actionGlobalMovieDetailsFragment(movieId)
+                    findNavController().onNavigate(action)
+                }
+            }
+        )
+
+        with(binding.recyclerGenres) {
+            setHasFixedSize(true)
+            adapter = genreMovieAdapter
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

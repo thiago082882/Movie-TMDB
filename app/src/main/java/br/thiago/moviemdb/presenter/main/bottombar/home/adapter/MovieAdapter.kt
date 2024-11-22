@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.thiago.moviemdb.R
+import br.thiago.moviemdb.databinding.MovieItemBinding
 import br.thiago.moviemdb.domain.model.movie.Movie
 import com.bumptech.glide.Glide
 

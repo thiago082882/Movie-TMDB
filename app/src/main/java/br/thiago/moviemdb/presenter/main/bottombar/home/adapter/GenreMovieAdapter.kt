@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import br.thiago.moviemdb.presenter.model.MoviesByGenre
 import br.thiago.moviemdb.R
 import br.thiago.moviemdb.databinding.GenreItemBinding
+import br.thiago.moviemdb.presenter.model.MoviesByGenre
 
 class GenreMovieAdapter(
     private val showAllListener: (Int, String) -> Unit,

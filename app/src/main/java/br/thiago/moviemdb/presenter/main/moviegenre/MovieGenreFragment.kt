@@ -2,6 +2,8 @@ package br.thiago.moviemdb.presenter.main.moviegenre
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -9,12 +11,19 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import br.thiago.moviemdb.databinding.FragmentMovieGenreBinding
+import  br.thiago.moviemdb.MainGraphDirections
+import  br.thiago.moviemdb.R
 import br.thiago.moviemdb.presenter.main.moviegenre.adapter.LoadStatePagingAdapter
 import br.thiago.moviemdb.presenter.main.moviegenre.adapter.MoviePagingAdapter
+import  br.thiago.moviemdb.util.hideKeyboard
+import br.thiago.moviemdb.util.initToolbar
+import  br.thiago.moviemdb.util.onNavigate
+import br.thiago.moviemdb.databinding.FragmentMovieGenreBinding
+import com.ferfalk.simplesearchview.SimpleSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,25 +55,25 @@ class MovieGenreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //initToolbar(toolbar = binding.toolbar)
+        initToolbar(toolbar = binding.toolbar)
         binding.toolbar.title = args.name
 
         initRecycler()
 
-        //getMoviesByGenrePagination()
+        getMoviesByGenrePagination()
 
-       // initSearchView()
+        initSearchView()
     }
 
     private fun initRecycler() {
         moviePagingAdapter = MoviePagingAdapter(
             context = requireContext(),
             movieClickListener = { movieId ->
-//                movieId?.let {
-//                    val action = MainGraphDirections
-//                        .actionGlobalMovieDetailsFragment(movieId)
-//                    findNavController().onNavigate(action)
-//                }
+                movieId?.let {
+                    val action = MainGraphDirections
+                        .actionGlobalMovieDetailsFragment(movieId)
+                    findNavController().onNavigate(action)
+                }
             }
         )
 
@@ -119,66 +128,66 @@ class MovieGenreFragment : Fragment() {
         }
     }
 
-//    private fun initSearchView() {
-//        binding.simpleSearchView.setOnQueryTextListener(object :
-//            SimpleSearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String): Boolean {
-//                hideKeyboard()
-//                if (query.isNotEmpty()) {
-//                    searchMovies(query)
-//                }
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextCleared(): Boolean {
-//                return false
-//            }
-//        })
-//
-//        binding.simpleSearchView.setOnSearchViewListener(object :
-//            SimpleSearchView.SearchViewListener {
-//            override fun onSearchViewShown() {
-//            }
-//
-//            override fun onSearchViewClosed() {
-//                getMoviesByGenrePagination()
-//            }
-//
-//            override fun onSearchViewShownAnimation() {
-//            }
-//
-//            override fun onSearchViewClosedAnimation() {
-//            }
-//        })
-//    }
+    private fun initSearchView() {
+        binding.simpleSearchView.setOnQueryTextListener(object :
+            SimpleSearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                hideKeyboard()
+                if (query.isNotEmpty()) {
+                    searchMovies(query)
+                }
+                return true
+            }
 
-//    private fun getMoviesByGenrePagination(forceRequest: Boolean = false) {
-//        lifecycleScope.launch {
-//            viewModel.getMoviesByGenrePagination(genreId = args.genreId, forceRequest = forceRequest)
-//            viewModel.movieList.collectLatest { pagingData ->
-//                moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-//            }
-//        }
-//    }
-//
-//    private fun searchMovies(query: String?) {
-//        lifecycleScope.launch {
-//            viewModel.searchMovies(query).collectLatest { pagingData ->
-//                moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-//            }
-//        }
-//    }
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.menu_search_view, menu)
-//        val item = menu.findItem(R.id.action_search)
-//        binding.simpleSearchView.setMenuItem(item)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
+            override fun onQueryTextCleared(): Boolean {
+                return false
+            }
+        })
+
+        binding.simpleSearchView.setOnSearchViewListener(object :
+            SimpleSearchView.SearchViewListener {
+            override fun onSearchViewShown() {
+            }
+
+            override fun onSearchViewClosed() {
+                getMoviesByGenrePagination()
+            }
+
+            override fun onSearchViewShownAnimation() {
+            }
+
+            override fun onSearchViewClosedAnimation() {
+            }
+        })
+    }
+
+    private fun getMoviesByGenrePagination(forceRequest: Boolean = false) {
+        lifecycleScope.launch {
+            viewModel.getMoviesByGenrePagination(genreId = args.genreId, forceRequest = forceRequest)
+            viewModel.movieList.collectLatest { pagingData ->
+                moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            }
+        }
+    }
+
+    private fun searchMovies(query: String?) {
+        lifecycleScope.launch {
+            viewModel.searchMovies(query).collectLatest { pagingData ->
+                moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_search_view, menu)
+        val item = menu.findItem(R.id.action_search)
+        binding.simpleSearchView.setMenuItem(item)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

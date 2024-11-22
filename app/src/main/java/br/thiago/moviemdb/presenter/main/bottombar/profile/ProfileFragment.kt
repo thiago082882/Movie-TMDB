@@ -106,8 +106,8 @@ class ProfileFragment : Fragment() {
             )
         )
 
-        binding.textUsername.text = "Arley Santana"
-        binding.textEmail.text = "andrew_ainsley@yourdomain.com"
+        binding.textUsername.text = "Thiago Costa de Jesus"
+        binding.textEmail.text = "t@gmail.com"
     }
 
     private fun showBottomSheetLogout() {

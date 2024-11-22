@@ -5,6 +5,7 @@ import br.thiago.moviemdb.data.model.movie.GenreResponse
 import br.thiago.moviemdb.data.model.movie.MovieResponse
 import br.thiago.moviemdb.domain.model.movie.Genre
 import br.thiago.moviemdb.domain.model.movie.Movie
+import br.thiago.moviemdb.presenter.model.MoviesByGenre
 
 fun GenreResponse.toDomain(): Genre {
     return Genre(
@@ -31,6 +32,16 @@ fun MovieResponse.toDomain(): Movie {
         voteCount = voteCount,
         runtime = runtime
     )
+}
+
+
+fun Genre.toPresentation(): MoviesByGenre {
+    return MoviesByGenre(
+        id = id,
+        name = name,
+        movies = emptyList()
+    )
+
 }
 
 

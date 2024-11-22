@@ -12,7 +12,7 @@ class LoadStatePagingAdapter : LoadStateAdapter<LoadStatePagingAdapter.LoadState
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
         holder.binding.apply {
-          //  progressBar.isVisible = loadState is LoadState.Loading
+           progressBar.isVisible = loadState is LoadState.Loading
         }
     }
 
