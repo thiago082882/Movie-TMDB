@@ -1,5 +1,6 @@
 package br.thiago.moviemdb.data.mapper
 
+import br.thiago.moviemdb.data.local.entity.MovieEntity
 import br.thiago.moviemdb.data.model.movie.AuthorDetailsResponse
 import br.thiago.moviemdb.data.model.movie.CountryResponse
 import br.thiago.moviemdb.data.model.movie.CreditResponse
@@ -94,21 +95,21 @@ fun MovieReviewResponse.toDomain(): MovieReview {
     )
 }
 
-//fun Movie.toEntity(): MovieEntity {
-//    return MovieEntity(
-//        id = id,
-//        title = title,
-//        poster = posterPath,
-//        runtime = runtime,
-//        insertion = System.currentTimeMillis()
-//    )
-//}
-//
-//fun MovieEntity.toDomain(): Movie {
-//    return Movie(
-//        id = id,
-//        title = title,
-//        posterPath = poster,
-//        runtime = runtime
-//    )
-//}
+fun Movie.toEntity(): MovieEntity {
+    return MovieEntity(
+        id = id,
+        title = title,
+        poster = posterPath,
+        runtime = runtime,
+        insertion = System.currentTimeMillis()
+    )
+}
+
+fun MovieEntity.toDomain(): Movie {
+    return Movie(
+        id = id,
+        title = title,
+        posterPath = poster,
+        runtime = runtime
+    )
+}

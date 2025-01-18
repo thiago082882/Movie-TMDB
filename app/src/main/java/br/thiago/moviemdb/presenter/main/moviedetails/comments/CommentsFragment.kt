@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import br.thiago.moviemdb.presenter.main.moviedetails.adapter.CommentsAdapter
 import br.thiago.moviemdb.presenter.main.moviedetails.details.MovieDetailsViewModel
 import br.thiago.moviemdb.databinding.FragmentCommentsBinding
+import br.thiago.moviemdb.util.StateView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,7 +44,7 @@ class CommentsFragment : Fragment() {
     private fun initObservers() {
         movieDetailsViewModel.movieId.observe(viewLifecycleOwner) { movieId ->
             if (movieId > 0) {
-             //   getMovieReviews(movieId)
+                getMovieReviews(movieId)
             }
         }
     }
@@ -55,24 +56,24 @@ class CommentsFragment : Fragment() {
             adapter = commentsAdapter
         }
     }
-//
-//    private fun getMovieReviews(movieId: Int) {
-//        viewModel.getMovieReviews(movieId).observe(viewLifecycleOwner) { stateView ->
-//            when (stateView) {
-//                is StateView.Loading -> {
-//
-//                }
-//
-//                is StateView.Success -> {
-//                    commentsAdapter.submitList(stateView.data)
-//                }
-//
-//                is StateView.Error -> {
-//
-//                }
-//            }
-//        }
-//    }
+
+    private fun getMovieReviews(movieId: Int) {
+        viewModel.getMovieReviews(movieId).observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+                    commentsAdapter.submitList(stateView.data)
+                }
+
+                is StateView.Error -> {
+
+                }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

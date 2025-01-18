@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import br.thiago.moviemdb.domain.local.usecase.InsertMovieUseCase
 import br.thiago.moviemdb.domain.model.movie.Movie
 import br.thiago.moviemdb.domain.usecase.movie.GetCreditsUseCase
 import br.thiago.moviemdb.domain.usecase.movie.GetMovieDetailsUseCase
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
-   // private val insertMovieUseCase: InsertMovieUseCase
+    private val insertMovieUseCase: InsertMovieUseCase
 ) : ViewModel() {
 
     private val _movieId = MutableLiveData(0)
@@ -61,7 +62,7 @@ class MovieDetailsViewModel @Inject constructor(
         try {
             emit(StateView.Loading())
 
-           // insertMovieUseCase(movie)
+            insertMovieUseCase(movie)
 
             emit(StateView.Success(Unit))
 
