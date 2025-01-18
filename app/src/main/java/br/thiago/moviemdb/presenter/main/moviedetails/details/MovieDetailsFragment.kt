@@ -10,12 +10,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.thiago.moviemdb.presenter.main.moviedetails.adapter.CastAdapter
 import br.thiago.moviemdb.R
 import br.thiago.moviemdb.databinding.DialogDownloadingBinding
 import br.thiago.moviemdb.databinding.FragmentMovieDetailsBinding
 import br.thiago.moviemdb.domain.model.movie.Movie
+import br.thiago.moviemdb.presenter.main.moviedetails.adapter.ViewPagerAdapter
+import br.thiago.moviemdb.presenter.main.moviedetails.comments.CommentsFragment
+import br.thiago.moviemdb.presenter.main.moviedetails.similar.SimilarFragment
+import br.thiago.moviemdb.presenter.main.moviedetails.trailers.TrailersFragment
+import br.thiago.moviemdb.util.StateView
+import br.thiago.moviemdb.util.ViewPager2ViewHeightAnimator
+import br.thiago.moviemdb.util.initToolbar
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -46,13 +55,13 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // initToolbar(toolbar = binding.toolbar, lightIcon = true)
+        initToolbar(toolbar = binding.toolbar, lightIcon = true)
 
-        //getMovieDetails()
+        getMovieDetails()
 
-        //initRecyclerCredits()
+        initRecyclerCredits()
 
-        //configTabLayout()
+        configTabLayout()
 
         initListeners()
     }
@@ -61,107 +70,107 @@ class MovieDetailsFragment : Fragment() {
         binding.btnDownloading.setOnClickListener { showDialogDownloading() }
     }
 
-//    private fun configTabLayout() {
-//        viewModel.setMovieId(movieId = args.movieId)
-//
-//        val adapter = ViewPagerAdapter(requireActivity())
-//        val mViewPager = ViewPager2ViewHeightAnimator()
-//
-//        mViewPager.viewPager2 = binding.viewPager
-//        mViewPager.viewPager2?.adapter = adapter
-//
-//        adapter.addFragment(
-//            fragment = TrailersFragment(),
-//            title = R.string.title_trailers_tab_layout
-//        )
-//
-//        adapter.addFragment(
-//            fragment = SimilarFragment(),
-//            title = R.string.title_similar_tab_layout
-//        )
-//
-//        adapter.addFragment(
-//            fragment = CommentsFragment(),
-//            title = R.string.title_comments_tab_layout
-//        )
-//
-//        binding.viewPager.offscreenPageLimit = adapter.itemCount
-//
-//        mViewPager.viewPager2?.let { viewPager ->
-//            TabLayoutMediator(
-//                binding.tabs, viewPager
-//            ) { tab, position ->
-//                tab.text = getString(adapter.getTitle(position))
-//            }.attach()
-//        }
-//    }
-//
-//    private fun getMovieDetails() {
-//        viewModel.getMovieDetails(movieId = args.movieId).observe(viewLifecycleOwner) { stateView ->
-//            when (stateView) {
-//                is StateView.Loading -> {
-//
-//                }
-//
-//                is StateView.Success -> {
-//                    stateView.data?.let {
-//                        this.movie = it
-//                        configData()
-//                    }
-//                }
-//
-//                is StateView.Error -> {
-//
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun insertMovie() {
-//        viewModel.insertMovie(movie).observe(viewLifecycleOwner) { stateView ->
-//            when (stateView) {
-//                is StateView.Loading -> {
-//
-//                }
-//
-//                is StateView.Success -> {
-//                    configData()
-//                }
-//
-//                is StateView.Error -> {
-//
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun initRecyclerCredits() {
-//        castAdapter = CastAdapter()
-//
-//        with(binding.recyclerCast) {
-//            layoutManager =
-//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            adapter = castAdapter
-//        }
-//    }
-//
-//    private fun getCredits() {
-//        viewModel.getCredits(movieId = args.movieId).observe(viewLifecycleOwner) { stateView ->
-//            when (stateView) {
-//                is StateView.Loading -> {
-//
-//                }
-//
-//                is StateView.Success -> {
-//                    castAdapter.submitList(stateView.data?.cast)
-//                }
-//
-//                is StateView.Error -> {
-//
-//                }
-//            }
-//        }
-//    }
+    private fun configTabLayout() {
+        viewModel.setMovieId(movieId = args.movieId)
+
+        val adapter = ViewPagerAdapter(requireActivity())
+        val mViewPager = ViewPager2ViewHeightAnimator()
+
+        mViewPager.viewPager2 = binding.viewPager
+        mViewPager.viewPager2?.adapter = adapter
+
+        adapter.addFragment(
+            fragment = TrailersFragment(),
+            title = R.string.title_trailers_tab_layout
+        )
+
+        adapter.addFragment(
+            fragment = SimilarFragment(),
+            title = R.string.title_similar_tab_layout
+        )
+
+        adapter.addFragment(
+            fragment = CommentsFragment(),
+            title = R.string.title_comments_tab_layout
+        )
+
+        binding.viewPager.offscreenPageLimit = adapter.itemCount
+
+        mViewPager.viewPager2?.let { viewPager ->
+            TabLayoutMediator(
+                binding.tabs, viewPager
+            ) { tab, position ->
+                tab.text = getString(adapter.getTitle(position))
+            }.attach()
+        }
+    }
+
+    private fun getMovieDetails() {
+        viewModel.getMovieDetails(movieId = args.movieId).observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+                    stateView.data?.let {
+                        this.movie = it
+                        configData()
+                    }
+                }
+
+                is StateView.Error -> {
+
+                }
+            }
+        }
+    }
+
+    private fun insertMovie() {
+        viewModel.insertMovie(movie).observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+                    configData()
+                }
+
+                is StateView.Error -> {
+
+                }
+            }
+        }
+    }
+
+    private fun initRecyclerCredits() {
+        castAdapter = CastAdapter()
+
+        with(binding.recyclerCast) {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = castAdapter
+        }
+    }
+
+    private fun getCredits() {
+        viewModel.getCredits(movieId = args.movieId).observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+                    castAdapter.submitList(stateView.data?.cast)
+                }
+
+                is StateView.Error -> {
+
+                }
+            }
+        }
+    }
 
     private fun configData() {
         Glide
@@ -187,7 +196,7 @@ class MovieDetailsFragment : Fragment() {
 
         binding.textDescription.text = movie.overview
 
-       // getCredits()
+        getCredits()
     }
 
     private fun showDialogDownloading() {
@@ -216,7 +225,7 @@ class MovieDetailsFragment : Fragment() {
 
                     handle.postDelayed(this, 50)
                 } else {
-                  //  insertMovie()
+                     insertMovie()
                     dialogDownloading.dismiss()
                 }
             }

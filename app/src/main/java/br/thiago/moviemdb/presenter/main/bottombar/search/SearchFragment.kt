@@ -16,9 +16,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import br.thiago.moviemdb.presenter.main.moviegenre.adapter.LoadStatePagingAdapter
 import br.thiago.moviemdb.presenter.main.moviegenre.adapter.MoviePagingAdapter
 import br.thiago.moviemdb.databinding.FragmentSearchBinding
+import br.thiago.moviemdb.util.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collectLatest
+import br.thiago.moviemdb.MainGraphDirections
+import br.thiago.moviemdb.util.onNavigate
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -51,11 +56,11 @@ class SearchFragment : Fragment() {
         moviePagingAdapter = MoviePagingAdapter(
             context = requireContext(),
             movieClickListener = { movieId ->
-//                movieId?.let {
-//                    val action = MainGraphDirections
-//                        .actionGlobalMovieDetailsFragment(movieId)
-//                    findNavController().onNavigate(action)
-//                }
+                movieId?.let {
+                    val action = MainGraphDirections
+                        .actionGlobalMovieDetailsFragment(movieId)
+                    findNavController().onNavigate(action)
+                }
             }
         )
 
@@ -116,7 +121,7 @@ class SearchFragment : Fragment() {
         binding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-              //  hideKeyboard()
+                hideKeyboard()
                 if (query.isNotEmpty()) {
                     searchMovies(query)
                 }
@@ -132,10 +137,9 @@ class SearchFragment : Fragment() {
 
     private fun searchMovies(query: String?) {
         lifecycleScope.launch {
-         //   viewModel.searchMovies(query).collectLatest {
-                //pagingData ->
-//moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-            //}
+            viewModel.searchMovies(query).collectLatest { pagingData ->
+                moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            }
         }
     }
 

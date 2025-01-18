@@ -7,7 +7,6 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import br.thiago.moviemdb.BuildConfig
 import br.thiago.moviemdb.data.mapper.toDomain
-import br.thiago.moviemdb.data.mapper.toPresentation
 import br.thiago.moviemdb.domain.model.movie.Genre
 import br.thiago.moviemdb.domain.usecase.movie.GetGenresUseCase
 import br.thiago.moviemdb.domain.usecase.movie.GetMoviesByGenreUseCase

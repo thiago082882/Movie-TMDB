@@ -5,17 +5,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import br.thiago.moviemdb.domain.model.movie.Movie
+import br.thiago.moviemdb.domain.usecase.movie.SearchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-  //  private val searchMoviesUseCase: SearchMoviesUseCase
+   private val searchMoviesUseCase: SearchMoviesUseCase
 ): ViewModel() {
 
-//    fun searchMovies(query: String?): Flow<PagingData<Movie>> {
-//        return searchMoviesUseCase(query = query).cachedIn(viewModelScope)
-//    }
+    fun searchMovies(query: String?): Flow<PagingData<Movie>> {
+        return searchMoviesUseCase(query = query).cachedIn(viewModelScope)
+    }
 
 }

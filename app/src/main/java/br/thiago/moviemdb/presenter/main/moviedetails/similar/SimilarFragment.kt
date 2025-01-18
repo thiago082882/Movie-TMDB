@@ -7,11 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import br.thiago.moviemdb.MainGraphDirections
 import br.thiago.moviemdb.R
 import br.thiago.moviemdb.databinding.FragmentSimilarBinding
 import br.thiago.moviemdb.presenter.main.bottombar.home.adapter.MovieAdapter
 import br.thiago.moviemdb.presenter.main.moviedetails.details.MovieDetailsViewModel
+import br.thiago.moviemdb.util.StateView
+import br.thiago.moviemdb.util.onNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +42,7 @@ class SimilarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-      //  initRecycler()
+        initRecycler()
 
         initObservers()
     }
@@ -51,45 +55,44 @@ class SimilarFragment : Fragment() {
         }
     }
 
-//    private fun initRecycler() {
-//        movieAdapter = MovieAdapter(
-//            context = requireContext(),
-//            layoutInflater = R.layout.movie_genre_item,
-//            movieClickListener = { movieId ->
-////                movieId?.let {
-////                    val action = MainGraphDirections
-////                        .actionGlobalMovieDetailsFragment(movieId)
-////                    findNavController().onNavigate(action)
-////                }
-//            }
-//        )
+    private fun initRecycler() {
+        movieAdapter = MovieAdapter(
+            context = requireContext(),
+            layoutInflater = R.layout.movie_genre_item,
+            movieClickListener = { movieId ->
+                movieId?.let {
+                    val action = MainGraphDirections
+                        .actionGlobalMovieDetailsFragment(movieId)
+                    findNavController().onNavigate(action)
+                }
+            }
+        )
 
         val lm = GridLayoutManager(requireContext(), 2)
-//
-//        with(binding.recyclerMovies) {
-//            layoutManager = lm
-//            setHasFixedSize(true)
-//            adapter = movieAdapter
-//        }
-//    }
+
+        with(binding.recyclerMovies) {
+            layoutManager = lm
+            setHasFixedSize(true)
+            adapter = movieAdapter
+        }
+    }
 
     private fun getSimilar(movieId: Int) {
-       // similarViewModel.getSimilar(movieId).observe(viewLifecycleOwner) {
-            //stateView ->
-//            when (stateView) {
-//                is StateView.Loading -> {
-//
-//                }
-//
-//                is StateView.Success -> {
-//                    movieAdapter.submitList(stateView.data)
-//                }
-//
-//                is StateView.Error -> {
-//
-//                }
-//            }
-       // }
+        similarViewModel.getSimilar(movieId).observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+                    movieAdapter.submitList(stateView.data)
+                }
+
+                is StateView.Error -> {
+
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
