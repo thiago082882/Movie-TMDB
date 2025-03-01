@@ -22,6 +22,7 @@ import br.thiago.moviemdb.presenter.main.moviedetails.similar.SimilarFragment
 import br.thiago.moviemdb.presenter.main.moviedetails.trailers.TrailersFragment
 import br.thiago.moviemdb.util.StateView
 import br.thiago.moviemdb.util.ViewPager2ViewHeightAnimator
+import br.thiago.moviemdb.util.calculateFileSize
 import br.thiago.moviemdb.util.initToolbar
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
@@ -212,8 +213,8 @@ class MovieDetailsFragment : Fragment() {
                     downloaded += (movieDuration / 100.0)
                     dialogBinding.textDownloading.text = getString(
                         R.string.text_downloaded_size_dialog_downloading,
-                        //downloaded.calculateFileSize(),
-                       // movieDuration.calculateFileSize()
+                        downloaded.calculateFileSize(),
+                        movieDuration.calculateFileSize()
                     )
 
                     progress++
