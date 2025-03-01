@@ -50,6 +50,9 @@ class SearchFragment : Fragment() {
         initRecycler()
 
         initSearchView()
+
+        observeSearchResults()
+
     }
 
     private fun initRecycler() {
@@ -136,12 +139,19 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchMovies(query: String?) {
+        viewModel.searchMovies(query)
+    }
+
+    private fun observeSearchResults() {
         lifecycleScope.launch {
-            viewModel.searchMovies(query).collectLatest { pagingData ->
-                moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            viewModel.searchResults.collectLatest { pagingData ->
+                pagingData?.let {
+                    moviePagingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                }
             }
         }
     }
+
 
     private fun emptyState(empty: Boolean) {
         binding.recyclerMovies.isVisible = !empty

@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import br.thiago.moviemdb.R
 import br.thiago.moviemdb.databinding.ItemCommentReviewBinding
 import br.thiago.moviemdb.domain.model.movie.MovieReview
+import br.thiago.moviemdb.util.formatCommentDate
 import com.bumptech.glide.Glide
 
-class CommentsAdapter : ListAdapter<MovieReview, CommentsAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class  CommentsAdapter : ListAdapter<MovieReview, CommentsAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieReview>() {
@@ -61,7 +62,7 @@ class CommentsAdapter : ListAdapter<MovieReview, CommentsAdapter.MyViewHolder>(D
         holder.binding.textUsername.text = review.authorDetails?.username
         holder.binding.textComment.text = review.content
         holder.binding.textRating.text = review?.authorDetails?.rating?.toString() ?: "0"
-       // holder.binding.textDate.text = formatCommentDate(review.createdAt)
+        holder.binding.textDate.text = formatCommentDate(review.createdAt)
     }
 
     inner class MyViewHolder(val binding: ItemCommentReviewBinding) :
