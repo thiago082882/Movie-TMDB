@@ -1,15 +1,17 @@
 package br.thiago.moviemdb.domain.usecase.user
 
-import br.thiago.moviemdb.domain.model.user.User
+
+import android.net.Uri
 import br.thiago.moviemdb.domain.repository.user.UserRepository
+
 import javax.inject.Inject
 
-class GetUserUseCase @Inject constructor(
+class SaveUserImageUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    suspend operator fun invoke(): User {
-        return userRepository.getUser()
+    suspend operator fun invoke(uri: Uri): String {
+        return userRepository.saveUserImage(uri)
     }
 
 }

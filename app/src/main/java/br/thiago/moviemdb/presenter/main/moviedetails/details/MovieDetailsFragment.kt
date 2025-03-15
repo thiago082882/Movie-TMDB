@@ -13,8 +13,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.thiago.moviemdb.presenter.main.moviedetails.adapter.CastAdapter
 import br.thiago.moviemdb.R
+import br.thiago.moviemdb.data.mapper.toFavoriteMovie
 import br.thiago.moviemdb.databinding.DialogDownloadingBinding
 import br.thiago.moviemdb.databinding.FragmentMovieDetailsBinding
+import br.thiago.moviemdb.domain.model.favorite.FavoriteMovie
 import br.thiago.moviemdb.domain.model.movie.Movie
 import br.thiago.moviemdb.presenter.main.moviedetails.adapter.ViewPagerAdapter
 import br.thiago.moviemdb.presenter.main.moviedetails.comments.CommentsFragment
@@ -44,6 +46,7 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var castAdapter: CastAdapter
 
     private lateinit var movie: Movie
+    private var favorites: MutableList<FavoriteMovie> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +72,18 @@ class MovieDetailsFragment : Fragment() {
 
     private fun initListeners() {
         binding.btnDownloading.setOnClickListener { showDialogDownloading() }
+
+        binding.imageBookmark.setOnClickListener {
+            if (favorites.any { it.id == movie.id }) {
+                favorites.removeIf { it.id == movie.id }
+            } else {
+                favorites.add(movie.toFavoriteMovie())
+            }
+
+            saveFavorites()
+
+            changedFavorite()
+        }
     }
 
     private fun configTabLayout() {
@@ -116,7 +131,7 @@ class MovieDetailsFragment : Fragment() {
                 is StateView.Success -> {
                     stateView.data?.let {
                         this.movie = it
-                        configData()
+                        getFavorites()
                     }
                 }
 
@@ -142,6 +157,47 @@ class MovieDetailsFragment : Fragment() {
 
                 }
             }
+        }
+    }
+
+    private fun saveFavorites() {
+        viewModel.saveFavorites(favorites).observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+                }
+
+                is StateView.Success -> {
+
+                }
+
+                is StateView.Error -> {
+                }
+            }
+        }
+    }
+
+    private fun getFavorites() {
+        viewModel.getFavorites().observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+                }
+
+                is StateView.Success -> {
+                    favorites.addAll(stateView.data ?: emptyList())
+                    configData()
+                }
+
+                is StateView.Error -> {
+                }
+            }
+        }
+    }
+
+    private fun changedFavorite() {
+        if (favorites.any { it.id == movie.id }) {
+            binding.imageBookmark.setImageResource(R.drawable.ic_bookmark_fill)
+        } else {
+            binding.imageBookmark.setImageResource(R.drawable.ic_bookmark_line)
         }
     }
 
@@ -176,7 +232,7 @@ class MovieDetailsFragment : Fragment() {
     private fun configData() {
         Glide
             .with(requireContext())
-            .load("https://image.tmdb.org/t/p/w500${movie.backdropPath}")
+            .load("https://image.tmdb.org/t/p/original${movie.backdropPath}")
             .into(binding.imageMovie)
 
         binding.textMovie.text = movie.title
@@ -196,6 +252,8 @@ class MovieDetailsFragment : Fragment() {
         binding.textGenres.text = getString(R.string.text_all_genres_movie_details_fragment, genres)
 
         binding.textDescription.text = movie.overview
+
+        changedFavorite()
 
         getCredits()
     }
@@ -226,7 +284,7 @@ class MovieDetailsFragment : Fragment() {
 
                     handle.postDelayed(this, 50)
                 } else {
-                     insertMovie()
+                    insertMovie()
                     dialogDownloading.dismiss()
                 }
             }

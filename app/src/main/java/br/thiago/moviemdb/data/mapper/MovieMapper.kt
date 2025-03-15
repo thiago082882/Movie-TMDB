@@ -8,6 +8,7 @@ import br.thiago.moviemdb.data.model.movie.GenreResponse
 import br.thiago.moviemdb.data.model.movie.MovieResponse
 import br.thiago.moviemdb.data.model.movie.MovieReviewResponse
 import br.thiago.moviemdb.data.model.movie.PersonResponse
+import br.thiago.moviemdb.domain.model.favorite.FavoriteMovie
 import br.thiago.moviemdb.domain.model.movie.AuthorDetails
 import br.thiago.moviemdb.domain.model.movie.Country
 import br.thiago.moviemdb.domain.model.movie.Credit
@@ -111,5 +112,25 @@ fun MovieEntity.toDomain(): Movie {
         title = title,
         posterPath = poster,
         runtime = runtime
+    )
+}
+
+fun Movie.toFavoriteMovie(): FavoriteMovie {
+    return FavoriteMovie(
+        id = id,
+        title = title,
+        posterPath = posterPath,
+        genres = genres,
+        voteAverage = voteAverage.toString()
+    )
+}
+
+fun FavoriteMovie.toDomain(): Movie {
+    return Movie(
+        id = id,
+        title = title,
+        posterPath = posterPath,
+        genres = genres,
+        voteAverage = voteAverage?.toFloat()
     )
 }

@@ -5,7 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import br.thiago.moviemdb.domain.local.usecase.InsertMovieUseCase
+import br.thiago.moviemdb.domain.model.favorite.FavoriteMovie
 import br.thiago.moviemdb.domain.model.movie.Movie
+import br.thiago.moviemdb.domain.usecase.favorite.GetFavoritesUseCase
+import br.thiago.moviemdb.domain.usecase.favorite.SaveFavoritesUseCase
 import br.thiago.moviemdb.domain.usecase.movie.GetCreditsUseCase
 import br.thiago.moviemdb.domain.usecase.movie.GetMovieDetailsUseCase
 import br.thiago.moviemdb.util.StateView
@@ -14,11 +17,14 @@ import kotlinx.coroutines.Dispatchers
 import retrofit2.HttpException
 import javax.inject.Inject
 
+
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
-    private val insertMovieUseCase: InsertMovieUseCase
+    private val insertMovieUseCase: InsertMovieUseCase,
+    private val saveFavoritesUseCase: SaveFavoritesUseCase,
+    private val getFavoritesUseCase: GetFavoritesUseCase
 ) : ViewModel() {
 
     private val _movieId = MutableLiveData(0)
@@ -74,6 +80,32 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun setMovieId(movieId: Int) {
         _movieId.value = movieId
+    }
+
+    fun saveFavorites(favorites: List<FavoriteMovie>) = liveData(Dispatchers.IO) {
+        try {
+            emit(StateView.Loading())
+
+            saveFavoritesUseCase(favorites)
+
+            emit(StateView.Success(Unit))
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            emit(StateView.Error(message = exception.message))
+        }
+    }
+
+    fun getFavorites() = liveData(Dispatchers.IO) {
+        try {
+            emit(StateView.Loading())
+
+            val favorites = getFavoritesUseCase()
+
+            emit(StateView.Success(favorites))
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            emit(StateView.Error(message = exception.message))
+        }
     }
 
 }

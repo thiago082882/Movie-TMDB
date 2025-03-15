@@ -2,11 +2,11 @@ package br.thiago.moviemdb.presenter.auth.login
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import br.thiago.moviemdb.R
@@ -19,7 +19,6 @@ import br.thiago.moviemdb.util.initToolbar
 import br.thiago.moviemdb.util.isEmailValid
 import br.thiago.moviemdb.util.onNavigate
 import br.thiago.moviemdb.util.showSnackBar
-
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 

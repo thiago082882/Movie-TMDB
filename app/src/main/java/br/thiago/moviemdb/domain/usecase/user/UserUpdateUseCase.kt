@@ -4,7 +4,9 @@ import br.thiago.moviemdb.domain.model.user.User
 import br.thiago.moviemdb.domain.repository.user.UserRepository
 import javax.inject.Inject
 
-class UserUpdateUseCase  constructor(
+
+
+class UserUpdateUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 

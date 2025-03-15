@@ -71,14 +71,16 @@ class RegisterFragment : Fragment() {
 
     private fun register(email: String, password: String) {
         viewModel.register(email, password).observe(viewLifecycleOwner) { stateView ->
-            when(stateView){
+            when (stateView) {
                 is StateView.Loading -> {
                     binding.progressLoading.isVisible = true
                 }
+
                 is StateView.Success -> {
                     startActivity(Intent(requireContext(), MainActivity::class.java))
                     requireActivity().finish()
                 }
+
                 is StateView.Error -> {
                     binding.progressLoading.isVisible = false
                     showSnackBar(
@@ -86,7 +88,7 @@ class RegisterFragment : Fragment() {
                     )
                 }
             }
-     }
+        }
     }
 
     override fun onDestroyView() {

@@ -1,0 +1,22 @@
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Caminho para o armazenamento externo -->
+    <external-path
+        name="external"
+        path="." />
+
+    <!-- Caminho para arquivos específicos do aplicativo no armazenamento externo -->
+    <external-files-path
+        name="external_files"
+        path="." />
+
+    <!-- Caminho para o cache do aplicativo no armazenamento externo -->
+    <cache-path
+        name="external_cache"
+        path="." />
+
+    <!-- Caminho para o armazenamento interno do aplicativo -->
+    <files-path
+        name="files"
+        path="." />
+
+</paths>

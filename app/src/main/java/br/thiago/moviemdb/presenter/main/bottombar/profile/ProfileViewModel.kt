@@ -1,26 +1,26 @@
-package br.thiago.moviemdb.presenter.auth.register
+package br.thiago.moviemdb.presenter.main.bottombar.profile
+
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import br.thiago.moviemdb.domain.usecase.auth.RegisterUseCase
+import br.thiago.moviemdb.domain.usecase.user.GetUserUseCase
 import br.thiago.moviemdb.util.StateView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
-
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
-    private val registerUseCase: RegisterUseCase
+class ProfileViewModel @Inject constructor(
+    private val getUSerUseCase: GetUserUseCase,
 ) : ViewModel() {
 
-    fun register(email: String, password: String) = liveData(Dispatchers.IO) {
+    fun getUser() = liveData(Dispatchers.IO) {
         try {
             emit(StateView.Loading())
 
-            registerUseCase.invoke(email, password)
+            val user = getUSerUseCase()
 
-            emit(StateView.Success(Unit))
+            emit(StateView.Success(user))
         } catch (exception: Exception) {
             exception.printStackTrace()
             emit(StateView.Error(message = exception.message))

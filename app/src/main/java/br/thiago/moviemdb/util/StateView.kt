@@ -1,5 +1,6 @@
 package br.thiago.moviemdb.util
 
+
 sealed class StateView<T>(
     val data: T? = null,
     val message: String? = null
